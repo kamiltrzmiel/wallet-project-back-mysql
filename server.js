@@ -22,6 +22,19 @@ const startAnimation = () => {
   }, 80);
 };
 
+const getAllRecords = async () => {
+  try {
+    const sqlQuery = 'SELECT * FROM users'; //wyszytkie rekordy w tablicy users
+
+    const [rows] = await connection.query(sqlQuery);
+    console.log('All records:', rows);
+    return rows;
+  } catch (error) {
+    console.error('Error retrieving records from the database:', error);
+    throw error;
+  }
+};
+
 const runServer = async () => {
   try {
     await connection.getConnection();
@@ -41,3 +54,4 @@ const runServer = async () => {
 
 runServer();
 startAnimation();
+getAllRecords();

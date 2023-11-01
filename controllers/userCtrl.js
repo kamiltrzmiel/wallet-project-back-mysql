@@ -78,22 +78,20 @@ export const getCurrent = async (req, res) => {
   try {
     const { user_id } = req.user;
     const connection = await pool.getConnection();
-    const [rows] = await connection.execute(
-      'SELECT name, email, subscription FROM users WHERE id = ?',
-      [user_id]
-    );
+    const [rows] = await connection.execute('SELECT name, email FROM users WHERE id = ?', [
+      user_id,
+    ]);
     connection.release();
 
     if (rows.length === 0) {
       throw new Error('User not found');
     }
 
-    const { name, email, subscription } = rows[0];
+    const { name, email } = rows[0];
 
     res.status(200).json({
       name,
       email,
-      subscription,
     });
   } catch (err) {
     res.status(err.statusCode || 500).json({ error: err.message || 'Internal Server Error' });
